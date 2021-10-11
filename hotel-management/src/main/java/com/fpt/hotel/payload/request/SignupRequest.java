@@ -11,7 +11,7 @@ public class SignupRequest {
  
     @NotBlank
     @Size(max = 50)
-    @Email
+    @Email(message = "Email sai định dạng!")
     private String email;
     
     private Set<String> role;
