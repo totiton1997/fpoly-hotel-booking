@@ -4,7 +4,7 @@ import com.fpt.hotel.model.Facility;
 
 import java.util.List;
 
-public interface IFacilitiesService {
+public interface IHotelService {
 
     List<Facility> findAllFacilities();
 }

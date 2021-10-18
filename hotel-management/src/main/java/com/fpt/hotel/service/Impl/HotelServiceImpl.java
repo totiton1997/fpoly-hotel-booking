@@ -1,23 +1,22 @@
 package com.fpt.hotel.service.Impl;
 
 import com.fpt.hotel.model.Facility;
-import com.fpt.hotel.repository.FacilitiesRepository;
-import com.fpt.hotel.service.IFacilitiesService;
+import com.fpt.hotel.repository.HotellRepository;
+import com.fpt.hotel.service.IHotelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Service
-public class FacilitiesServiceImpl implements IFacilitiesService {
+public class HotelServiceImpl implements IHotelService {
 
-    Logger logger = LoggerFactory.getLogger(FacilitiesServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(HotelServiceImpl.class);
 
     @Autowired
-    private FacilitiesRepository facilitiesRepository;
+    private HotellRepository facilitiesRepository;
 
     @Override
     public List<Facility> findAllFacilities() {
