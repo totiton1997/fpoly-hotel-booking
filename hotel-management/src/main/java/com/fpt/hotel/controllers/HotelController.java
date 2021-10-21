@@ -20,9 +20,9 @@ public class HotelController {
     private HotelServiceImpl hotelService;
 
     @GetMapping
-    public ResponseEntity<?> findAllFacilities(){
+    public ResponseEntity<?> findAllHotels(){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Hiển thi tất cả các cơ sở!",hotelService.findAllFacilities())
+                new ResponseObject("ok","Hiển thi tất cả các cơ sở!",hotelService.findAllHotels())
         );
     }
 

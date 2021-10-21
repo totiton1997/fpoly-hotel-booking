@@ -1,10 +1,10 @@
 package com.fpt.hotel.service;
 
-import com.fpt.hotel.model.Facility;
+import com.fpt.hotel.model.Hotel;
 
 import java.util.List;
 
 public interface IHotelService {
 
-    List<Facility> findAllFacilities();
+    List<Hotel> findAllHotels();
 }
