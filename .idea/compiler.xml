@@ -11,11 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-<<<<<<< HEAD
       <module name="hotel-management" target="11" />
-=======
-      <module name="hotel-management" target="1.8" />
->>>>>>> e5e2344581412eaf36255de1b959972db6b8553b
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
