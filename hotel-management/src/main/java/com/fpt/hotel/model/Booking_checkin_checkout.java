@@ -28,6 +28,10 @@ public class Booking_checkin_checkout {
 
     @ManyToOne
     @JoinColumn(name = "id_booking")
-    private Booking id_booking;
+    private Booking booking;
+
+    @ManyToOne
+    @JoinColumn(name = "id_type_room")
+    private Type_room typeRoom;
 
 }

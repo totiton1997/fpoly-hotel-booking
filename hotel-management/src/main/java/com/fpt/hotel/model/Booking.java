@@ -1,6 +1,7 @@
 package com.fpt.hotel.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class Booking {
 
     private String address;
 
-    @CreatedDate
+    @CreationTimestamp
     private Date create_date;
 
     private double deposit_price;
@@ -46,7 +47,7 @@ public class Booking {
 
     private Long id_voucher;
 
-    @OneToMany(mappedBy = "id_booking")
+    @OneToMany(mappedBy = "booking")
     private List<Booking_checkin_checkout> id_checkin_checkout;
 
     @OneToMany(mappedBy = "id_booking")

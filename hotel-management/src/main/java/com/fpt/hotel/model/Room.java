@@ -1,7 +1,18 @@
 package com.fpt.hotel.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "rooms")
+@Getter
+@Setter
 public class Room {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
     private int number_room;
@@ -12,7 +23,11 @@ public class Room {
 
     private String description;
 
-    private Type_room id_room_type;
+    @ManyToOne
+    @JoinColumn(name = "id_room")
+    private Type_room room;
 
-    private Hotel id_hotel;
+    @ManyToOne
+    @JoinColumn(name = "id_hotel")
+    private Hotel hotel;
 }

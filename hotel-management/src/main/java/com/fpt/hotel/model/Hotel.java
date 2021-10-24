@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -30,5 +31,8 @@ public class Hotel {
     private String village;
     private Integer totalNumberRoom;
     private String images;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<Room> rooms;
 
 }
