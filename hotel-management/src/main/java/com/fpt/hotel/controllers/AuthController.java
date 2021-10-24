@@ -68,25 +68,29 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		if(userDetails.getEnabled() == 0 ) {
-			return ResponseEntity.ok().body(new MessageResponse("Tài khoản của bạn đang bị khóa!"));
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			if(userDetails.getEnabled() == 0 ) {
+				return ResponseEntity.ok().body(new MessageResponse("Tài khoản của bạn đang bị khóa!"));
+			}
+
+			String jwt = jwtUtils.generateJwtToken(userDetails);
+
+			List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+					.collect(Collectors.toList());
+
+			RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
+			return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
+					userDetails.getUsername(), userDetails.getEmail(), roles));
+		} catch (Exception e) {
+			throw new RuntimeException("Sai tên tài khoản hoặc mật khẩu");
 		}
-
-		String jwt = jwtUtils.generateJwtToken(userDetails);
-
-		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-
-		RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-
-		return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
-				userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
 
 	@PostMapping("/signup")
@@ -119,10 +123,10 @@ public class AuthController {
 					roles.add(adminRole);
 
 					break;
-				case "mod":
-					Role modRole = roleRepository.findByName(ERole.ROLE_STAFF)
+				case "staff":
+					Role staffRole = roleRepository.findByName(ERole.ROLE_STAFF)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
+					roles.add(staffRole);
 
 					break;
 				default:

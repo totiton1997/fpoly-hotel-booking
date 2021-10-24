@@ -51,6 +51,7 @@ public class User {
 	private Integer status;
 	private String username;
 	private String password;
+	private String cccd;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
