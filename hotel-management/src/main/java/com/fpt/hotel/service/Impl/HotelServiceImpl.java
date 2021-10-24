@@ -24,4 +24,10 @@ public class HotelServiceImpl implements IHotelService {
         logger.info("Find all data: "+hotellRepository.findAll());
         return hotellRepository.findAll();
     }
+
+    @Override
+    public Hotel createHotel(Hotel hotel) {
+
+        return hotellRepository.save(hotel);
+    }
 }

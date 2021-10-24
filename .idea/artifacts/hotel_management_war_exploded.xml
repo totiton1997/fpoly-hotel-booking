@@ -79,7 +79,7 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.5.1" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.5.1" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:5.5.1" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.5.3" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.5.5" />
           <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.2.0.Final" />
           <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:2.0.2" />
         </element>

@@ -1,0 +1,7 @@
+package com.fpt.hotel.repository;
+
+import com.fpt.hotel.model.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookingRepository extends JpaRepository<Booking, Long> {
+}

@@ -23,7 +23,7 @@ public class Hotel {
     private Long id;
 
     @Size(min = 1, max = 50, message = "Base name exceeds 50 characters")
-    private String nameFacility;
+    private String name;
     private String city;
     private String district;
     private String wards;

@@ -36,11 +36,11 @@ public class OwnerController {
 		List<User> findAll = userRepository.findAll(role_name);
 		if (findAll.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.OK).body(
-					new ResponseObject("ok","Không có user nào",null));
+					new ResponseObject(HttpStatus.NOT_FOUND,"Không có user nào",null));
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponseObject("ok","Trả về dữ liệu user thành công",findAll));
+				new ResponseObject(HttpStatus.OK,"Trả về dữ liệu user thành công",findAll));
 	}
 
 	@PostMapping("user")
@@ -49,11 +49,11 @@ public class OwnerController {
 		Boolean existsByUsername = userRepository.existsByUsername(data.getUsername());
 		if (existsByUsername) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-					new ResponseObject("Bad Request","Thêm thất bại , đã có username này!!",data));
+					new ResponseObject(HttpStatus.BAD_REQUEST,"Thêm thất bại , đã có username này!!",data));
 		}
 		User save = userRepository.save(data);
 		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponseObject("Ok","Thêm user thành công",save));
+				new ResponseObject(HttpStatus.OK,"Thêm user thành công",save));
 	}
 	
 	@PutMapping("user/{id}")
@@ -62,12 +62,12 @@ public class OwnerController {
 		Optional<User> userOpt = userRepository.findById(id);
 		if(userOpt.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-					new ResponseObject("No content","Không có user này",null));
+					new ResponseObject(HttpStatus.NOT_FOUND,"Không có user này",null));
 		}
 		
 		User save = userRepository.save(data);
 		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponseObject("Ok","cập nhật user thành công",save));
+				new ResponseObject(HttpStatus.OK,"cập nhật user thành công",save));
 	}
 
 }
