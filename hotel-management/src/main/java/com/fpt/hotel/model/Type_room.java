@@ -1,5 +1,6 @@
 package com.fpt.hotel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,4 +34,7 @@ public class Type_room {
 
     @OneToMany(mappedBy = "typeRoom")
     private List<Booking_checkin_checkout> booking_checkin_checkouts ;
+
+    @OneToMany(mappedBy = "typeRoom")
+    private List<TypeRoomImage> typeRoomImages;
 }

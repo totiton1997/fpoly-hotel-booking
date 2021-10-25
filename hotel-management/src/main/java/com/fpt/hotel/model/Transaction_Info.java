@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -22,6 +23,7 @@ public class Transaction_Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
     private Date date_release;
 
     private double total_price;
@@ -33,4 +35,8 @@ public class Transaction_Info {
     @ManyToOne
     @JoinColumn(name = "id_creator")
     private User id_creator;
+
+    private String status;
+
+    private String description;
 }

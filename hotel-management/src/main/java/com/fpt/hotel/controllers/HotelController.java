@@ -20,52 +20,26 @@ public class HotelController {
     private HotelServiceImpl hotelService;
 
     @GetMapping
-    public ResponseEntity<?> findAllHotels(){
+    public ResponseEntity<?> findAllHotels() {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(HttpStatus.OK.toString(),"Hiển thi tất cả các cơ sở!",hotelService.findAllHotels())
+                new ResponseObject(HttpStatus.OK.toString(), "Hiển thi tất cả các cơ sở!", hotelService.findAllHotels())
         );
     }
 
     @PostMapping
-    public ResponseEntity<?> createHotel(@RequestBody Hotel hotelDTO){
+    public ResponseEntity<?> createHotel(@RequestBody Hotel hotelDTO) {
 
-        if(hotelDTO.getName().isEmpty() || hotelDTO.getName() == null || hotelDTO.getName().length() > 50){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Tên hotel không được để trống và nhỏ hơn 50 ký tự!",null)
+
+        Hotel hotel = hotelService.createHotel(hotelDTO);
+        if (hotel != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(HttpStatus.OK.toString(), "Tạo mới cơ sở hotel thành công!", hotel)
             );
         }
-        else if(hotelDTO.getCity().isEmpty() || hotelDTO.getCity() == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Thành phố hotel không được để trống !",null)
-            );
-        }else if(hotelDTO.getDistrict().isEmpty() || hotelDTO.getDistrict() == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Quận/huyện hotel không được để trống!",null)
-            );
-        }else if(hotelDTO.getWards().isEmpty() || hotelDTO.getWards() == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Phường/xã hotel không được để trống!",null)
-            );
-        }else if(hotelDTO.getVillage().isEmpty() || hotelDTO.getVillage() == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Thôn/xóm hotel không được để trống!",null)
-            );
-        }else if(hotelDTO.getTotalNumberRoom() == null || hotelDTO.getTotalNumberRoom() <= 0){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Tổng số phòng hotel không được để trống hoặc nhỏ hơn 0!",null)
-            );
-        }else{
-            Hotel hotel = hotelService.createHotel(hotelDTO);
-            if(hotel != null){
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(HttpStatus.OK.toString(),"Tạo mới cơ sở hotel thành công!",hotel)
-                );
-            }
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(),"Tạo mới cơ sở hotel không thành công!",hotel)
-            );
-        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Tạo mới cơ sở hotel không thành công!", hotel)
+        );
 
 
     }

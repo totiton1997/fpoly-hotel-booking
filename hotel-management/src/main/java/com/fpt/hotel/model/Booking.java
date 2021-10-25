@@ -22,8 +22,6 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String address;
-
     @CreationTimestamp
     private Date create_date;
 
@@ -52,4 +50,8 @@ public class Booking {
 
     @OneToMany(mappedBy = "id_booking")
     private List<Transaction_Info> id_transaction_info;
+
+    private Long id_hotel;
+
+    private Double totalPrice;
 }

@@ -25,7 +25,7 @@ public class OwnerController {
     OwnerService ownerService;
 
     @GetMapping("user")
-    public ResponseEntity<?> getAll(@RequestParam("role_name") String roleName) {
+    public ResponseEntity<ResponseObject> getAll(@RequestParam("role_name") String roleName) {
 
         List<OwnerDTO> findAll = ownerService.findAll(roleName);
         if (findAll.isEmpty()) {
@@ -37,7 +37,7 @@ public class OwnerController {
 
     @PostMapping(value = "user/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> create(@PathVariable("folder") String folder, @RequestPart("user") String user,
+    public ResponseEntity<ResponseObject> create(@PathVariable("folder") String folder, @RequestPart("user") String user,
                                     @RequestPart("file") MultipartFile[] files) {
 
         User userRes = ownerService.save(folder, user, files);
@@ -51,7 +51,7 @@ public class OwnerController {
     }
 
     @PutMapping("user/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody User user) {
+    public ResponseEntity<ResponseObject> update(@PathVariable("id") Integer id, @RequestBody User user) {
 
         User update = ownerService.update(id, user);
 

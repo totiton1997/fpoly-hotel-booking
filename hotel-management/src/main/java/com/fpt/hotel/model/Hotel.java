@@ -26,9 +26,7 @@ public class Hotel {
     @Size(min = 1, max = 50, message = "Base name exceeds 50 characters")
     private String name;
     private String city;
-    private String district;
-    private String wards;
-    private String village;
+    private String address;
     private Integer totalNumberRoom;
     private String images;
 

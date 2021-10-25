@@ -24,7 +24,7 @@ public class Room {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "id_room")
+    @JoinColumn(name = "id_type_room")
     private Type_room room;
 
     @ManyToOne
