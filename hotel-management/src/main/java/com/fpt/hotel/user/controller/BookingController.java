@@ -2,6 +2,7 @@ package com.fpt.hotel.user.controller;
 
 import com.fpt.hotel.model.Booking;
 import com.fpt.hotel.payload.response.ResponseObject;
+import com.fpt.hotel.user.dto.BookingResponse;
 import com.fpt.hotel.user.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,8 @@ public class BookingController {
 
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody Booking data) {
-        data.setStatus("Đang sử dụng");
 
-        Booking booking = bookingService.create(data);
+        BookingResponse booking = bookingService.create(data);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "Đặt phòng thành công", booking));
     }

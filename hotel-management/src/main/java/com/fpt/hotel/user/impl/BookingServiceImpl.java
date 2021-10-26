@@ -7,7 +7,9 @@ import com.fpt.hotel.repository.BookingRepository;
 import com.fpt.hotel.repository.Booking_checkin_checkoutRepository;
 import com.fpt.hotel.repository.TransactionInfoRepository;
 import com.fpt.hotel.repository.TypeRoomRepository;
+import com.fpt.hotel.user.dto.BookingResponse;
 import com.fpt.hotel.user.service.BookingService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,15 +30,23 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     TypeRoomRepository typeRoomRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @Override
-    public Booking create(Booking booking) {
+    public BookingResponse create(Booking booking) {
         booking.setStatus("Đang sử dụng");
 
-        List<Booking_checkin_checkout> checkinCheckouts = booking.getId_checkin_checkout();
+        List<Booking_checkin_checkout> checkinCheckouts = booking.getCheckinCheckouts();
         double tongGiaTien = 0;
-        for (Booking_checkin_checkout checkin_checkout : checkinCheckouts) {
-            Type_room typeRoom = typeRoomRepository.findById(checkin_checkout.getTypeRoom().getId()).get();
-            Integer tongNgay = checkin_checkout.getDate_out().getDate() - checkin_checkout.getDate_in().getDate();
+
+        for (Booking_checkin_checkout checkinCheckout : checkinCheckouts) {
+
+            Type_room typeRoom = typeRoomRepository.findById(checkinCheckout.getTypeRoom().getId()).get();
+            int ngayDi = checkinCheckout.getDate_out().toLocalDate().getDayOfMonth();
+            int ngayDen = checkinCheckout.getDate_in().toLocalDate().getDayOfMonth();
+
+            Integer tongNgay = ngayDi - ngayDen;
 
             double tongTien = typeRoom.getPrice() * tongNgay;
             tongGiaTien += tongTien;
@@ -46,8 +56,20 @@ public class BookingServiceImpl implements BookingService {
 
         Booking newBooking = bookingRepository.save(booking);
 
+        for (Booking_checkin_checkout checkinCheckout : checkinCheckouts) {
+            checkinCheckout.setBooking(newBooking);
+        }
+
         bookingCheckinCheckoutRepository.saveAll(checkinCheckouts);
 
-        return newBooking;
+        return getBookingResponse(newBooking);
+
+    }
+
+    private BookingResponse getBookingResponse(Booking newBooking) {
+        BookingResponse bookingResponse = new BookingResponse();
+
+        modelMapper.map(newBooking, bookingResponse);
+        return bookingResponse;
     }
 }

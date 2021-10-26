@@ -46,7 +46,7 @@ public class Booking {
     private Long id_voucher;
 
     @OneToMany(mappedBy = "booking")
-    private List<Booking_checkin_checkout> id_checkin_checkout;
+    private List<Booking_checkin_checkout> checkinCheckouts;
 
     @OneToMany(mappedBy = "id_booking")
     private List<Transaction_Info> id_transaction_info;
