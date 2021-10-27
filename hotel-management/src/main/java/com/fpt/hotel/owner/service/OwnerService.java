@@ -10,7 +10,7 @@ public interface OwnerService {
 
     List<OwnerDTO> findAll(String roleName);
 
-    User save(String folder, String user, MultipartFile[] files);
+    User save(String folder, String user, List<MultipartFile>  files);
 
     User update(Integer id, User user);
 }

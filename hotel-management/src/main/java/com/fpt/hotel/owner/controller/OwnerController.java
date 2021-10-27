@@ -38,7 +38,7 @@ public class OwnerController {
     @PostMapping(value = "user/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> create(@PathVariable("folder") String folder, @RequestPart("user") String user,
-                                    @RequestPart("file") MultipartFile[] files) {
+                                    @RequestPart(name = "file" , required = false) List<MultipartFile>  files) {
 
         User userRes = ownerService.save(folder, user, files);
 

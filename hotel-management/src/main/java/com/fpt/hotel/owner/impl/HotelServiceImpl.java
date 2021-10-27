@@ -30,20 +30,21 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
-    public Hotel createHotel(String folder, String hotel, MultipartFile[] files) {
+    public Hotel createHotel(String folder, String hotel, List<MultipartFile> files) {
         Hotel hotelJson = new Hotel();
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             hotelJson = objectMapper.readValue(hotel, Hotel.class);
+            String fileName = "";
+            Boolean existsByName = hotelRepository.existsByName(hotelJson.getName());
 
-            Boolean existsByUsername = hotelRepository.existsByName(hotelJson.getName());
-
-            if (existsByUsername) {
+            if (existsByName) {
                 return null;
             }
-
-            List<String> fileLists = fileManagerService.save(folder, files);
-            String fileName = fileLists.get(0);
+            if (files != null) {
+                List<String> fileLists = fileManagerService.save(folder, files);
+                fileName = fileLists.get(0);
+            }
 
             hotelJson.setImages(fileName);
 
@@ -55,7 +56,7 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
-    public Hotel updateHotel(Long id, String folder, String hotel, MultipartFile[] files) {
+    public Hotel updateHotel(Long id, String folder, String hotel, List<MultipartFile> files) {
         Hotel hotelOld = hotelRepository.findById(id).get();
         Hotel hotelJson = new Hotel();
         try {
@@ -64,17 +65,18 @@ public class HotelServiceImpl implements IHotelService {
 
             // lấy id cũ để cập nhật
             hotelJson.setId(hotelOld.getId());
-            String imageOld = hotelOld.getImages();
 
-            // không chọn ảnh thì set lại ảnh cũ
-            if (files == null || files.length == 0) {
-                hotelJson.setImages(imageOld);
+            String image = "";
+            if (files == null) {
+                image = hotelOld.getImages();
             } else {
                 List<String> fileLists = fileManagerService.save(folder, files);
                 String fileName = fileLists.get(0);
-                fileManagerService.delete(folder, imageOld);
-                hotelJson.setImages(fileName);
+                fileManagerService.delete(folder, image);
+                image = fileName;
             }
+
+            hotelJson.setImages(image);
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

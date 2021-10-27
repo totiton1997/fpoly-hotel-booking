@@ -34,7 +34,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public User save(String folder, String user, MultipartFile[] files) {
+    public User save(String folder, String user, List<MultipartFile>  files) {
         User userJson = new User();
         try {
             ObjectMapper objectMapper = new ObjectMapper();

@@ -12,10 +12,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
-@RequestMapping("/api/hotels")
+@RequestMapping("/api/owner/hotels")
 public class HotelController {
 
     @Autowired
@@ -31,7 +33,7 @@ public class HotelController {
     @PostMapping(value = "/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> createHotel(@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
-                                         @RequestPart("file") MultipartFile[] files) {
+                                         @RequestPart(name = "file" , required = false) List<MultipartFile> files) {
 
 
         Hotel newHotel = hotelService.createHotel(folder, hotel, files);
@@ -42,14 +44,14 @@ public class HotelController {
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Thêm cơ sở thất bại!", newHotel)
+                new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Đã có tên cơ sở này!", newHotel)
         );
     }
 
     @PutMapping(value = "{id}/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> updateHotel(@PathVariable("id") Long id ,@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
-                                         @RequestPart(name = "file" , required = false) MultipartFile[] files ) {
+                                         @RequestPart(name = "file" , required = false) List<MultipartFile>  files ) {
 
         Hotel newHotel = hotelService.updateHotel(id , folder, hotel, files);
         if (newHotel != null) {

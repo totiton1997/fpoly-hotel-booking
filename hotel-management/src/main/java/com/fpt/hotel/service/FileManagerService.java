@@ -53,12 +53,11 @@ public class FileManagerService {
         return filenames;
     }
 
-    public List<String> save(String folder, MultipartFile[] files) {
+    public List<String> save(String folder, List<MultipartFile>  files) {
         List<String> filenames = new ArrayList<String>();
 
         for (MultipartFile file : files) {
             String name = System.currentTimeMillis() + file.getOriginalFilename();
-            System.out.println(name);
             String filename = Integer.toHexString(name.hashCode()) + name.substring(name.lastIndexOf("."));
             Path path = this.getPath(folder, filename);
             try {

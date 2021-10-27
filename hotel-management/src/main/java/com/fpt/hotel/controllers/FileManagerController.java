@@ -40,7 +40,7 @@ public class FileManagerController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("{folder}")
     public List<String> upload(@PathVariable("folder") String folder,
-                               @PathParam("files") MultipartFile[] files) {
+                               @PathParam("files") List<MultipartFile>  files) {
     	
         return fileService.save(folder, files);
     }

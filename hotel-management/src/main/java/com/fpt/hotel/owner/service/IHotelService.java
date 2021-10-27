@@ -9,7 +9,7 @@ public interface IHotelService {
 
     List<Hotel> findAllHotels();
 
-    Hotel createHotel(String folder, String hotel, MultipartFile[] files);
+    Hotel createHotel(String folder, String hotel, List<MultipartFile>  files);
 
-    Hotel updateHotel(Long id ,String folder, String hotel, MultipartFile[] files);
+    Hotel updateHotel(Long id ,String folder, String hotel, List<MultipartFile>  files);
 }
