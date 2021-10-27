@@ -54,4 +54,7 @@ public class Booking {
     private Long id_hotel;
 
     private Double totalPrice;
+
+    @OneToMany(mappedBy = "booking")
+    private List<BookingUtility> bookingUtilities;
 }

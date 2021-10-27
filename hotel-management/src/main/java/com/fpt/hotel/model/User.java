@@ -56,4 +56,7 @@ public class User {
 
 	private Long id_hotel;
 
+	@OneToMany(mappedBy = "user")
+	private List<Voucher> vouchers;
+
 }

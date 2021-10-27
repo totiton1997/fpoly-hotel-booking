@@ -37,4 +37,7 @@ public class Type_room {
 
     @OneToMany(mappedBy = "typeRoom")
     private List<TypeRoomImage> typeRoomImages;
+
+    @OneToMany(mappedBy = "typeRoom")
+    private List<DetailUtility> detailUtilities;
 }

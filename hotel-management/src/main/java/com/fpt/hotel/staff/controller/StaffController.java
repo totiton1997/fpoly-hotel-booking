@@ -33,23 +33,24 @@ public class StaffController {
 
     @PostMapping("api/confirm-booking")
     public ResponseEntity<ResponseObject> confirmBooking(@RequestBody TransactionRequest transactionRequest) {
-        List<Booking> bookings = bookingRepository.listBookingByIdUser(transactionRequest.getId_user(), transactionRequest.getId_hotel());
+        List<Booking> bookings = bookingRepository.listBookingByIdUser(
+                transactionRequest.getId_user(), transactionRequest.getId_hotel());
         Booking booking = bookings.get(0);
-        booking.setStatus("Đã checkin");
+        String newStatus = "Đã checkin";
+        booking.setStatus(newStatus);
         Booking newBooking = bookingRepository.save(booking);
 
-        if (newBooking.getStatus() == "Đã checkin") {
-            Transaction_Info transactionInfoResp = new Transaction_Info();
+        if (newBooking.getStatus() == newStatus) {
             Transaction_Info transaction_info = new Transaction_Info();
             transaction_info.setId_booking(newBooking);
             transaction_info.setId_creator(userRepository.findById(transactionRequest.getId_creator()).get());
-            transaction_info.setStatus("Đã checkin");
-            transactionInfoResp = transactionInfoRepository.save(transaction_info);
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok" , "Tạo hóa đơn thành công",transactionInfoResp));
-
+            transaction_info.setStatus(newStatus);
+            transaction_info.setTotal_price(booking.getTotalPrice());
+            Transaction_Info transactionInfoResp =  transactionInfoRepository.save(transaction_info);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(HttpStatus.OK.toString(), "Tạo hóa đơn thành công", transactionInfoResp));
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Bad Request" ,"Tạo hóa đơn thất bại",null));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Tạo hóa đơn thất bại", null));
     }
 
 }
