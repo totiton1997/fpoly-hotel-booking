@@ -1,4 +1,4 @@
-package com.fpt.hotel.user.dto;
+package com.fpt.hotel.user.dto.response;
 
 import com.fpt.hotel.model.Transaction_Info;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class BookingResponse {
 
     private Long id_voucher;
 
-    private List<BookingCheckInCheckOutDTO> checkinCheckouts;
+    private List<BookingCheckInCheckOutResponse> checkinCheckouts;
 
     private List<Transaction_Info> id_transaction_info;
 

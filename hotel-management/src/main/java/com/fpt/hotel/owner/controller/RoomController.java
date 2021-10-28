@@ -1,7 +1,7 @@
 package com.fpt.hotel.owner.controller;
 
 import com.fpt.hotel.model.Room;
-import com.fpt.hotel.owner.dto.RoomDTO;
+import com.fpt.hotel.owner.dto.response.RoomResponse;
 import com.fpt.hotel.owner.service.IRoomService;
 import com.fpt.hotel.payload.response.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class RoomController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> findAllRoom() {
-        List<RoomDTO> roomDTOList = roomService.findAll();
+        List<RoomResponse> roomDTOList = roomService.findAll();
         if (roomDTOList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
                     new ResponseObject(HttpStatus.NO_CONTENT.toString(), "Không có phòng nào!", roomDTOList)
@@ -36,7 +36,7 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestBody Room room) {
-        RoomDTO roomDTO = roomService.save(room);
+        RoomResponse roomDTO = roomService.save(room);
         if (roomDTO == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Đã có tên số phòng này!", roomDTO)

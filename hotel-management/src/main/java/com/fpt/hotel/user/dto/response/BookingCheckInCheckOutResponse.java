@@ -1,4 +1,4 @@
-package com.fpt.hotel.user.dto;
+package com.fpt.hotel.user.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.sql.Date;
 
 @Getter
 @Setter
-public class BookingCheckInCheckOutDTO {
+public class BookingCheckInCheckOutResponse {
     private Long id;
 
     private Date date_in;

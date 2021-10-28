@@ -1,4 +1,4 @@
-package com.fpt.hotel.owner.dto;
+package com.fpt.hotel.owner.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class OwnerDTO {
+public class OwnerResponse {
 
     private Integer id;
     private String first_name;

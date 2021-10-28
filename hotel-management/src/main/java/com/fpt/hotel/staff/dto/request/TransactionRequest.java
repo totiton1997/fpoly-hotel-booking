@@ -1,4 +1,4 @@
-package com.fpt.hotel.staff.dto;
+package com.fpt.hotel.staff.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

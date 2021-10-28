@@ -1,11 +1,9 @@
 package com.fpt.hotel.user.controller;
 
 import com.fpt.hotel.model.Booking;
-import com.fpt.hotel.model.User;
 import com.fpt.hotel.payload.response.ResponseObject;
 import com.fpt.hotel.repository.BookingRepository;
-import com.fpt.hotel.user.dto.BookingCheckInCheckOutDTO;
-import com.fpt.hotel.user.dto.BookingResponse;
+import com.fpt.hotel.user.dto.response.BookingResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

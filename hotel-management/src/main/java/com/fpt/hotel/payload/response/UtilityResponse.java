@@ -7,15 +7,15 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UtilityDTO {
+public class UtilityResponse {
     private Long id;
 
     private String utilityName;
 
     private String image;
 
-    private List<DetaiUtilityDTO> detailUtilities;
+    private List<DetaiUtilityResponse> detailUtilities;
 
-    private TypeUtilityDTO typeUtility;
+    private TypeUtilityResponse typeUtility;
 
 }

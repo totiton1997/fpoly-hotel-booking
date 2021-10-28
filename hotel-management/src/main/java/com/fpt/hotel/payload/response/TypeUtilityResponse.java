@@ -1,12 +1,14 @@
 package com.fpt.hotel.payload.response;
 
+import com.fpt.hotel.model.TypeUtility;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class DetaiUtilityDTO {
+public class TypeUtilityResponse {
     private Long id;
-    private Double price;
-    private Integer quantity;
+
+    private String typeUtilityName;
+
 }

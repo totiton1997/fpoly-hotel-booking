@@ -1,7 +1,7 @@
 package com.fpt.hotel.owner.controller;
 
 import com.fpt.hotel.model.User;
-import com.fpt.hotel.owner.dto.OwnerDTO;
+import com.fpt.hotel.owner.dto.response.OwnerResponse;
 import com.fpt.hotel.owner.service.OwnerService;
 import com.fpt.hotel.payload.response.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class OwnerController {
     @GetMapping("user")
     public ResponseEntity<ResponseObject> getAll(@RequestParam("role_name") String roleName) {
 
-        List<OwnerDTO> findAll = ownerService.findAll(roleName);
+        List<OwnerResponse> findAll = ownerService.findAll(roleName);
         if (findAll.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "Không có user nào", null));
         }

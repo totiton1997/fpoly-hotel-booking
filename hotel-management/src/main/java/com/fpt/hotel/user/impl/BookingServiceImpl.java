@@ -7,7 +7,7 @@ import com.fpt.hotel.repository.BookingRepository;
 import com.fpt.hotel.repository.Booking_checkin_checkoutRepository;
 import com.fpt.hotel.repository.TransactionInfoRepository;
 import com.fpt.hotel.repository.TypeRoomRepository;
-import com.fpt.hotel.user.dto.BookingResponse;
+import com.fpt.hotel.user.dto.response.BookingResponse;
 import com.fpt.hotel.user.service.BookingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

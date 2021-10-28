@@ -2,7 +2,7 @@ package com.fpt.hotel.controllers;
 
 import com.fpt.hotel.model.Utility;
 import com.fpt.hotel.payload.response.ResponseObject;
-import com.fpt.hotel.payload.response.UtilityDTO;
+import com.fpt.hotel.payload.response.UtilityResponse;
 import com.fpt.hotel.repository.UtilityRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UtilityController {
 //         List<UtilityDTO>  utilityDTOS = utilityRepository.findAll().stream().map(
 //                utility -> modelMapper.map(utility , UtilityDTO.class)).collect(Collectors.toList());
         Utility utility = utilityRepository.findById(id).get();
-        UtilityDTO utilityDTO = modelMapper.map(utility, UtilityDTO.class);
+        UtilityResponse utilityDTO = modelMapper.map(utility, UtilityResponse.class);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseObject("ok", "Trả về dữ liệu tiện ích thành công", utilityDTO));
     }

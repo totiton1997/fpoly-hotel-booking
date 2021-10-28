@@ -1,4 +1,4 @@
-package com.fpt.hotel.payload.response;
+package com.fpt.hotel.user.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +7,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class BookingUtilityDTO {
-    private Long id;
+public class BookingUtilityRequest {
 
     private String description;
 
     private Long idBooking;
 
-    private Long idUtility;
+    private List<UtilityRequest> utilityRequests;
+
 }

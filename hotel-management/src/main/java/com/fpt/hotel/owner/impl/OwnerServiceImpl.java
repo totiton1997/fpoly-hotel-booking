@@ -2,7 +2,7 @@ package com.fpt.hotel.owner.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpt.hotel.model.User;
-import com.fpt.hotel.owner.dto.OwnerDTO;
+import com.fpt.hotel.owner.dto.response.OwnerResponse;
 import com.fpt.hotel.owner.service.OwnerService;
 import com.fpt.hotel.repository.UserRepository;
 import com.fpt.hotel.service.FileManagerService;
@@ -28,9 +28,9 @@ public class OwnerServiceImpl implements OwnerService {
     ModelMapper modelMapper;
 
     @Override
-    public List<OwnerDTO> findAll(String roleName) {
+    public List<OwnerResponse> findAll(String roleName) {
         List<User> users = userRepository.findAll(roleName);
-        return users.stream().map(user -> modelMapper.map(user, OwnerDTO.class)).collect(Collectors.toList());
+        return users.stream().map(user -> modelMapper.map(user, OwnerResponse.class)).collect(Collectors.toList());
     }
 
     @Override

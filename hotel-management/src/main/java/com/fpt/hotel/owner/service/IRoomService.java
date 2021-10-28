@@ -1,13 +1,13 @@
 package com.fpt.hotel.owner.service;
 
 import com.fpt.hotel.model.Room;
-import com.fpt.hotel.owner.dto.RoomDTO;
+import com.fpt.hotel.owner.dto.response.RoomResponse;
 
 import java.util.List;
 
 public interface IRoomService {
-    List<RoomDTO> findAll();
+    List<RoomResponse> findAll();
 
-    RoomDTO save(Room room);
+    RoomResponse save(Room room);
 
 }

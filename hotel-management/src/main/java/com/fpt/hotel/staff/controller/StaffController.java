@@ -6,7 +6,7 @@ import com.fpt.hotel.payload.response.ResponseObject;
 import com.fpt.hotel.repository.BookingRepository;
 import com.fpt.hotel.repository.TransactionInfoRepository;
 import com.fpt.hotel.repository.UserRepository;
-import com.fpt.hotel.staff.dto.TransactionRequest;
+import com.fpt.hotel.staff.dto.request.TransactionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

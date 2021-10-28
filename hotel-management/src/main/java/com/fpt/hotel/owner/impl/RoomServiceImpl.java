@@ -1,7 +1,7 @@
 package com.fpt.hotel.owner.impl;
 
 import com.fpt.hotel.model.Room;
-import com.fpt.hotel.owner.dto.RoomDTO;
+import com.fpt.hotel.owner.dto.response.RoomResponse;
 import com.fpt.hotel.owner.service.IRoomService;
 import com.fpt.hotel.repository.RoomRepository;
 import org.modelmapper.ModelMapper;
@@ -21,13 +21,13 @@ public class RoomServiceImpl implements IRoomService {
     ModelMapper modelMapper;
 
     @Override
-    public List<RoomDTO> findAll() {
+    public List<RoomResponse> findAll() {
        return roomRepository.findAll().stream().map(
-               room -> modelMapper.map(room , RoomDTO.class)).collect(Collectors.toList());
+               room -> modelMapper.map(room , RoomResponse.class)).collect(Collectors.toList());
     }
 
     @Override
-    public RoomDTO save(Room room) {
+    public RoomResponse save(Room room) {
 
         boolean check = roomRepository.existsByNumberRoom(room.getNumberRoom());
         if(check){
@@ -35,6 +35,6 @@ public class RoomServiceImpl implements IRoomService {
         }
 
         Room newRoom = roomRepository.save(room);
-        return modelMapper.map(newRoom, RoomDTO.class);
+        return modelMapper.map(newRoom, RoomResponse.class);
     }
 }

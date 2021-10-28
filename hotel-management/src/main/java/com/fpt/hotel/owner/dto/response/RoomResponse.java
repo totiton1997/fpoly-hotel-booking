@@ -1,11 +1,11 @@
-package com.fpt.hotel.owner.dto;
+package com.fpt.hotel.owner.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RoomDTO {
+public class RoomResponse {
     private Long id;
 
     private int numberRoom;
