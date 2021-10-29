@@ -2,6 +2,7 @@ package com.fpt.hotel.user.controller;
 
 import com.fpt.hotel.model.Booking;
 import com.fpt.hotel.payload.response.ResponseObject;
+import com.fpt.hotel.user.dto.request.BookingRequest;
 import com.fpt.hotel.user.dto.response.BookingResponse;
 import com.fpt.hotel.user.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("api/booking")
+@RequestMapping("api/user/booking")
 @PreAuthorize("isAuthenticated()")
 public class BookingController {
 
@@ -23,7 +24,7 @@ public class BookingController {
     BookingService bookingService;
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody Booking data) {
+    public ResponseEntity<?> create(@RequestBody BookingRequest data) {
 
         BookingResponse booking = bookingService.create(data);
 

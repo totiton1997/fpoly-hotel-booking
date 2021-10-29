@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UtilityResponse {
+public class    UtilityResponse {
     private String utilityName;
 
     private String image;

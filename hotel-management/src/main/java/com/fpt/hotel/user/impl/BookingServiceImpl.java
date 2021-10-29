@@ -7,6 +7,8 @@ import com.fpt.hotel.repository.BookingRepository;
 import com.fpt.hotel.repository.Booking_checkin_checkoutRepository;
 import com.fpt.hotel.repository.TransactionInfoRepository;
 import com.fpt.hotel.repository.TypeRoomRepository;
+import com.fpt.hotel.user.dto.request.BookingRequest;
+import com.fpt.hotel.user.dto.request.CheckInCheckOutRequest;
 import com.fpt.hotel.user.dto.response.BookingResponse;
 import com.fpt.hotel.user.service.BookingService;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -34,15 +37,16 @@ public class BookingServiceImpl implements BookingService {
     ModelMapper modelMapper;
 
     @Override
-    public BookingResponse create(Booking booking) {
-        booking.setStatus("Đang sử dụng");
+    public BookingResponse create(BookingRequest bookingRequest) {
+        bookingRequest.setStatus("Đang sử dụng");
 
-        List<Booking_checkin_checkout> checkinCheckouts = booking.getCheckinCheckouts();
+        List<CheckInCheckOutRequest> checkinCheckouts = bookingRequest.getCheckinCheckouts();
         double tongGiaTien = 0;
+        Type_room typeRoom = null;
 
-        for (Booking_checkin_checkout checkinCheckout : checkinCheckouts) {
+        for (CheckInCheckOutRequest checkinCheckout : checkinCheckouts) {
 
-            Type_room typeRoom = typeRoomRepository.findById(checkinCheckout.getTypeRoom().getId()).get();
+            typeRoom = typeRoomRepository.findById(checkinCheckout.getIdTypeRoom()).get();
             int ngayDi = checkinCheckout.getDate_out().toLocalDate().getDayOfMonth();
             int ngayDen = checkinCheckout.getDate_in().toLocalDate().getDayOfMonth();
 
@@ -52,15 +56,22 @@ public class BookingServiceImpl implements BookingService {
             tongGiaTien += tongTien;
 
         }
-        booking.setTotalPrice(tongGiaTien);
+        bookingRequest.setTotalPrice(tongGiaTien);
+
+        Booking booking = modelMapper.map(bookingRequest , Booking.class);
 
         Booking newBooking = bookingRepository.save(booking);
 
-        for (Booking_checkin_checkout checkinCheckout : checkinCheckouts) {
-            checkinCheckout.setBooking(newBooking);
+        for (CheckInCheckOutRequest checkinCheckout : checkinCheckouts) {
+            checkinCheckout.setIdBooking(newBooking.getId());
         }
 
-        bookingCheckinCheckoutRepository.saveAll(checkinCheckouts);
+        List<Booking_checkin_checkout> booking_checkin_checkouts =  checkinCheckouts.stream().map(checkinCheckout -> modelMapper.map(
+                checkinCheckout , Booking_checkin_checkout.class)).collect(Collectors.toList());
+
+        newBooking.setCheckinCheckouts(booking_checkin_checkouts);
+
+        bookingCheckinCheckoutRepository.saveAll(booking_checkin_checkouts);
 
         return getBookingResponse(newBooking);
 
