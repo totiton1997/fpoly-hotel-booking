@@ -16,7 +16,6 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/owner/hotels")
 public class HotelController {
 
@@ -30,6 +29,7 @@ public class HotelController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> createHotel(@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
@@ -48,6 +48,7 @@ public class HotelController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "{id}/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> updateHotel(@PathVariable("id") Long id ,@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,

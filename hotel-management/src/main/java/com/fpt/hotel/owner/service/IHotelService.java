@@ -1,13 +1,14 @@
 package com.fpt.hotel.owner.service;
 
 import com.fpt.hotel.model.Hotel;
+import com.fpt.hotel.owner.dto.response.HotelResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface IHotelService {
 
-    List<Hotel> findAllHotels();
+    List<HotelResponse> findAllHotels();
 
     Hotel createHotel(String folder, String hotel, List<MultipartFile>  files);
 

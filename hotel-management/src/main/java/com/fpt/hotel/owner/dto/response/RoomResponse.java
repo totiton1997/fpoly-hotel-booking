@@ -16,7 +16,6 @@ public class RoomResponse {
 
     private String description;
 
-    private Long idTypeRoom;
+    private String nameTypeRoom;
 
-    private Long idHotel;
 }

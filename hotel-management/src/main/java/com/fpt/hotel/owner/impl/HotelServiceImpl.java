@@ -2,9 +2,11 @@ package com.fpt.hotel.owner.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpt.hotel.model.Hotel;
+import com.fpt.hotel.owner.dto.response.HotelResponse;
 import com.fpt.hotel.owner.service.IHotelService;
 import com.fpt.hotel.repository.HotelRepository;
 import com.fpt.hotel.service.FileManagerService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements IHotelService {
@@ -22,11 +25,15 @@ public class HotelServiceImpl implements IHotelService {
     @Autowired
     private HotelRepository hotelRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @Override
-    public List<Hotel> findAllHotels() {
+    public List<HotelResponse> findAllHotels() {
 
         logger.info("Find all data: " + hotelRepository.findAll());
-        return hotelRepository.findAll();
+        return hotelRepository.findAll().stream().map(hotel -> modelMapper.map(hotel , HotelResponse.class
+        )).collect(Collectors.toList());
     }
 
     @Override
