@@ -5,6 +5,7 @@ import com.fpt.hotel.owner.dto.response.HotelResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IHotelService {
 
@@ -13,4 +14,6 @@ public interface IHotelService {
     Hotel createHotel(String folder, String hotel, List<MultipartFile>  files);
 
     Hotel updateHotel(Long id ,String folder, String hotel, List<MultipartFile>  files);
+
+    HotelResponse findById(Long id);
 }

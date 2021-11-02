@@ -2,8 +2,9 @@ package com.fpt.hotel.owner.controller;
 
 
 import com.fpt.hotel.model.Hotel;
-import com.fpt.hotel.payload.response.ResponseObject;
+import com.fpt.hotel.owner.dto.response.HotelResponse;
 import com.fpt.hotel.owner.impl.HotelServiceImpl;
+import com.fpt.hotel.payload.response.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,11 +30,24 @@ public class HotelController {
         );
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<ResponseObject> findByHotel(@PathVariable("id") Long id) {
+        HotelResponse hotelResponse = hotelService.findById(id);
+        if (hotelResponse == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Không có cơ sở này!", hotelResponse)
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(HttpStatus.OK.toString(), "Trả về cơ sở thành công!", hotelResponse)
+        );
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> createHotel(@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
-                                         @RequestPart(name = "file" , required = false) List<MultipartFile> files) {
+                                                      @RequestPart(name = "file", required = false) List<MultipartFile> files) {
 
 
         Hotel newHotel = hotelService.createHotel(folder, hotel, files);
@@ -51,10 +65,10 @@ public class HotelController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "{id}/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ResponseObject> updateHotel(@PathVariable("id") Long id ,@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
-                                         @RequestPart(name = "file" , required = false) List<MultipartFile>  files ) {
+    public ResponseEntity<ResponseObject> updateHotel(@PathVariable("id") Long id, @PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
+                                                      @RequestPart(name = "file", required = false) List<MultipartFile> files) {
 
-        Hotel newHotel = hotelService.updateHotel(id , folder, hotel, files);
+        Hotel newHotel = hotelService.updateHotel(id, folder, hotel, files);
         if (newHotel != null) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(HttpStatus.OK.toString(), "Cập nhật cơ sở hotel thành công!", newHotel)

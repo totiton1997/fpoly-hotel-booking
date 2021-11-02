@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,7 +63,9 @@ public class AuthController {
     RefreshTokenService refreshTokenService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest)  {
+
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -84,9 +87,8 @@ public class AuthController {
 
             return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
                     userDetails.getUsername(), userDetails.getEmail(), roles));
-        } catch (Exception e) {
-//           throw new BadCredentialsException("Sai tên tài khoản hoặc mật khẩu");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Sai tên tài khoản hoặc mật khẩu"));
+        }catch (Exception e){
+           return ResponseEntity.badRequest().body(new MessageResponse("Sai tên tài khoản hoặc mật khẩu"));
         }
     }
 

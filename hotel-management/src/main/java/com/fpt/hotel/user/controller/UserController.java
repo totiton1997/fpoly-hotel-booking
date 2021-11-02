@@ -32,8 +32,8 @@ public class UserController {
         List<Booking> findAll = bookingRepository.findById_user(id);
 
         if(findAll.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ResponseObject("no content", "Không có dữ liệu", findAll));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject(HttpStatus.NOT_FOUND.toString(), "Không có dữ liệu", findAll));
         }
 
         List<BookingResponse> bookingResponses = findAll.stream().map

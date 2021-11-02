@@ -4,16 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpt.hotel.model.TypeRoomImage;
 import com.fpt.hotel.model.Type_room;
+import com.fpt.hotel.owner.dto.response.TypeRoomResponse;
 import com.fpt.hotel.owner.service.ITypeRoomService;
 import com.fpt.hotel.repository.TypeRoomImageRepository;
 import com.fpt.hotel.repository.TypeRoomRepository;
 import com.fpt.hotel.service.FileManagerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TypeRoomServiceImpl implements ITypeRoomService {
@@ -26,6 +30,9 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
 
     @Autowired
     FileManagerService fileManagerService;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public Type_room save(String folder, String typeRoom, List<MultipartFile> files) throws JsonProcessingException {
@@ -41,6 +48,12 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
         // cập nhật lại loại phòng khi có đủ các trường trong TypeRoomImage
         return typeRoomRepository.save(typeRoomSave);
 
+    }
+
+    @Override
+    public List<TypeRoomResponse> findAll() {
+        return typeRoomRepository.findAll().stream().map(item -> modelMapper.map(item , TypeRoomResponse.class
+        )).collect(Collectors.toList());
     }
 
     // lưu typeRoomImage

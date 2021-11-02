@@ -23,16 +23,15 @@ public class HotelServiceImpl implements IHotelService {
     @Autowired
     FileManagerService fileManagerService;
     @Autowired
-    private HotelRepository hotelRepository;
-
-    @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private HotelRepository hotelRepository;
 
     @Override
     public List<HotelResponse> findAllHotels() {
 
         logger.info("Find all data: " + hotelRepository.findAll());
-        return hotelRepository.findAll().stream().map(hotel -> modelMapper.map(hotel , HotelResponse.class
+        return hotelRepository.findAll().stream().map(hotel -> modelMapper.map(hotel, HotelResponse.class
         )).collect(Collectors.toList());
     }
 
@@ -90,6 +89,12 @@ public class HotelServiceImpl implements IHotelService {
         }
 
         return hotelRepository.save(hotelJson);
+    }
+
+    @Override
+    public HotelResponse findById(Long id) {
+        Hotel hotel = hotelRepository.findById(id).get();
+        return modelMapper.map(hotel, HotelResponse.class);
     }
 
 

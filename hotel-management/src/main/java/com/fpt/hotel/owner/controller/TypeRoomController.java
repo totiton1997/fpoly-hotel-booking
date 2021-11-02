@@ -15,15 +15,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/owner")
-@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/api/owner/typerooms")
+
 @CrossOrigin("*")
 public class TypeRoomController {
 
     @Autowired
     TypeRoomServiceImpl typeRoomService;
 
-    @PostMapping(value = "type_room/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping
+    public ResponseEntity<ResponseObject> findAllHotels() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(HttpStatus.OK.toString(), "Hiển thi tất cả các loại phòng thành công!", typeRoomService.findAll())
+        );
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> create(@PathVariable("folder") String folder, @RequestPart("typeRoom") String typeRoom,
                                                  @RequestPart(name = "file", required = false) List<MultipartFile> files) throws JsonProcessingException {
