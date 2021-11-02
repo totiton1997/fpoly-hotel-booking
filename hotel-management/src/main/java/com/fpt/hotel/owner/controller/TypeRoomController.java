@@ -2,7 +2,9 @@ package com.fpt.hotel.owner.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fpt.hotel.model.Type_room;
+import com.fpt.hotel.owner.dto.response.TypeRoomResponse;
 import com.fpt.hotel.owner.impl.TypeRoomServiceImpl;
+import com.fpt.hotel.owner.service.ITypeRoomService;
 import com.fpt.hotel.payload.response.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,7 @@ import java.util.List;
 public class TypeRoomController {
 
     @Autowired
-    TypeRoomServiceImpl typeRoomService;
+    ITypeRoomService typeRoomService;
 
     @GetMapping
     public ResponseEntity<ResponseObject> findAllHotels() {
@@ -36,7 +38,7 @@ public class TypeRoomController {
     public ResponseEntity<ResponseObject> create(@PathVariable("folder") String folder, @RequestPart("typeRoom") String typeRoom,
                                                  @RequestPart(name = "file", required = false) List<MultipartFile> files) throws JsonProcessingException {
 
-        Type_room typeRoomResp = typeRoomService.save(folder, typeRoom, files);
+        TypeRoomResponse typeRoomResp = typeRoomService.save(folder, typeRoom, files);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", "Thêm loại phòng thành công", typeRoomResp));
     }

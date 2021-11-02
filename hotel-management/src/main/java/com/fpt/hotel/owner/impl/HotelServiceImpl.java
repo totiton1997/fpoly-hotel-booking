@@ -49,7 +49,7 @@ public class HotelServiceImpl implements IHotelService {
             }
             if (files != null) {
                 List<String> fileLists = fileManagerService.save(folder, files);
-                fileName = fileLists.get(0);
+                fileName = String.join("," , fileLists);
             }
 
             hotelJson.setImages(fileName);
@@ -77,7 +77,7 @@ public class HotelServiceImpl implements IHotelService {
                 image = hotelOld.getImages();
             } else {
                 List<String> fileLists = fileManagerService.save(folder, files);
-                String fileName = fileLists.get(0);
+                String fileName =  String.join("," , fileLists);
                 fileManagerService.delete(folder, image);
                 image = fileName;
             }

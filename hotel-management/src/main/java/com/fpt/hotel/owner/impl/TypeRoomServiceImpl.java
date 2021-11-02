@@ -12,7 +12,6 @@ import com.fpt.hotel.service.FileManagerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
     ModelMapper modelMapper;
 
     @Override
-    public Type_room save(String folder, String typeRoom, List<MultipartFile> files) throws JsonProcessingException {
+    public TypeRoomResponse save(String folder, String typeRoom, List<MultipartFile> files) throws JsonProcessingException {
 
         Type_room typeRoomSave = getTypeRoom(typeRoom);
 
@@ -46,13 +45,14 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
         typeRoomSave.setTypeRoomImages(typeRoomImages);
 
         // cập nhật lại loại phòng khi có đủ các trường trong TypeRoomImage
-        return typeRoomRepository.save(typeRoomSave);
+        Type_room type_room = typeRoomRepository.save(typeRoomSave);
+        return modelMapper.map(type_room, TypeRoomResponse.class );
 
     }
 
     @Override
     public List<TypeRoomResponse> findAll() {
-        return typeRoomRepository.findAll().stream().map(item -> modelMapper.map(item , TypeRoomResponse.class
+        return typeRoomRepository.findAll().stream().map(item -> modelMapper.map(item, TypeRoomResponse.class
         )).collect(Collectors.toList());
     }
 

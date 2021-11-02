@@ -42,4 +42,6 @@ public class BookingRequest {
     private Long id_hotel;
 
     private Double totalPrice;
+
+    private Integer totalPeoples;
 }

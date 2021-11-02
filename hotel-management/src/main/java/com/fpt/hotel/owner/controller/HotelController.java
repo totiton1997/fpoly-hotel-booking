@@ -4,6 +4,7 @@ package com.fpt.hotel.owner.controller;
 import com.fpt.hotel.model.Hotel;
 import com.fpt.hotel.owner.dto.response.HotelResponse;
 import com.fpt.hotel.owner.impl.HotelServiceImpl;
+import com.fpt.hotel.owner.service.IHotelService;
 import com.fpt.hotel.payload.response.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.List;
 public class HotelController {
 
     @Autowired
-    private HotelServiceImpl hotelService;
+    private IHotelService hotelService;
 
     @GetMapping
     public ResponseEntity<ResponseObject> findAllHotels() {
@@ -48,7 +49,6 @@ public class HotelController {
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> createHotel(@PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
                                                       @RequestPart(name = "file", required = false) List<MultipartFile> files) {
-
 
         Hotel newHotel = hotelService.createHotel(folder, hotel, files);
         if (newHotel != null) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ITypeRoomService {
 
-    Type_room save(String folder, String typeRoom, List<MultipartFile> files) throws JsonProcessingException;
+    TypeRoomResponse save(String folder, String typeRoom, List<MultipartFile> files) throws JsonProcessingException;
 
     List<TypeRoomResponse> findAll();
 }

@@ -55,6 +55,8 @@ public class Booking {
 
     private Double totalPrice;
 
+    private Integer totalPeoples;
+
     @OneToMany(mappedBy = "booking")
     private List<BookingUtility> bookingUtilities;
 }
