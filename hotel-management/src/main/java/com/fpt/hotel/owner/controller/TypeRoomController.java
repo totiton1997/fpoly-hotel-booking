@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/owner/typerooms")
-
 @CrossOrigin("*")
 public class TypeRoomController {
 

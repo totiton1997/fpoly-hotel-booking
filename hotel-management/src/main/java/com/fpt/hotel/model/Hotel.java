@@ -1,20 +1,17 @@
 package com.fpt.hotel.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-
+@Getter
+@Setter
 @Entity
 @Table(name = "hotels")
 public class Hotel {
@@ -30,7 +27,12 @@ public class Hotel {
     private Integer totalNumberRoom;
     private String images;
 
+    private Integer isEnabled;
+
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<User> users;
 
 }

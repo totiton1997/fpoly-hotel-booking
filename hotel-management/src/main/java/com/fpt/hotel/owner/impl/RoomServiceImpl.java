@@ -21,8 +21,8 @@ public class RoomServiceImpl implements IRoomService {
     ModelMapper modelMapper;
 
     @Override
-    public List<RoomResponse> findAll() {
-       return roomRepository.findAll().stream().map(
+    public List<RoomResponse> findAll(Long id ) {
+       return roomRepository.findAll(id).stream().map(
                room -> modelMapper.map(room , RoomResponse.class)).collect(Collectors.toList());
     }
 

@@ -16,4 +16,6 @@ public interface IHotelService {
     Hotel updateHotel(Long id ,String folder, String hotel, List<MultipartFile>  files);
 
     HotelResponse findById(Long id);
+
+    HotelResponse updateIsEnabled(Long id);
 }

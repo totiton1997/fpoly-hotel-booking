@@ -15,7 +15,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
-    private int numberRoom;
+    private String numberRoom;
 
     private String status;
 
@@ -25,7 +25,7 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "id_type_room")
-    private Type_room room;
+    private Type_room typeRoom;
 
     @ManyToOne
     @JoinColumn(name = "id_hotel")

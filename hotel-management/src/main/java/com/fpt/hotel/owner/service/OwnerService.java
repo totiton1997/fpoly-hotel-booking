@@ -12,5 +12,5 @@ public interface OwnerService {
 
     User save(String folder, String user, List<MultipartFile>  files);
 
-    User update(Integer id, User user);
+    User update(Integer id);
 }

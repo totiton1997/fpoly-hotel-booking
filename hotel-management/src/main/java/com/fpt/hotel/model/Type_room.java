@@ -29,7 +29,7 @@ public class Type_room {
 
     private String status;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "typeRoom")
     private List<Room> rooms;
 
     @OneToMany(mappedBy = "typeRoom")

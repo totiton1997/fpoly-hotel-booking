@@ -54,7 +54,9 @@ public class User {
 	@OneToMany(mappedBy = "id_creator")
 	private List<Transaction_Info> id_transaction_info;
 
-	private Long id_hotel;
+	@ManyToOne()
+	@JoinColumn(name = "id_hotel")
+	private Hotel hotel;
 
 	@OneToMany(mappedBy = "user")
 	private List<Voucher> vouchers;

@@ -2,9 +2,11 @@ package com.fpt.hotel.owner.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpt.hotel.model.Hotel;
+import com.fpt.hotel.model.Room;
 import com.fpt.hotel.owner.dto.response.HotelResponse;
 import com.fpt.hotel.owner.service.IHotelService;
 import com.fpt.hotel.repository.HotelRepository;
+import com.fpt.hotel.repository.RoomRepository;
 import com.fpt.hotel.service.FileManagerService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +28,10 @@ public class HotelServiceImpl implements IHotelService {
     @Autowired
     ModelMapper modelMapper;
     @Autowired
-    private HotelRepository hotelRepository;
+    HotelRepository hotelRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     @Override
     public List<HotelResponse> findAllHotels() {
@@ -41,6 +47,7 @@ public class HotelServiceImpl implements IHotelService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             hotelJson = objectMapper.readValue(hotel, Hotel.class);
+            hotelJson.setIsEnabled(1);
             String fileName = "";
             Boolean existsByName = hotelRepository.existsByName(hotelJson.getName());
 
@@ -58,7 +65,19 @@ public class HotelServiceImpl implements IHotelService {
             throw new RuntimeException(e.getMessage());
         }
 
-        return hotelRepository.save(hotelJson);
+        Hotel newHotel = hotelRepository.save(hotelJson);
+        if(newHotel.getTotalNumberRoom() != 0){
+            for (int i = 0; i < newHotel.getTotalNumberRoom(); i++) {
+                Room room = new Room();
+                room.setEnabled(true);
+                String numberRoom = String.format("%03d", i + 1);
+                room.setNumberRoom(numberRoom);
+                room.setHotel(newHotel);
+                room.setStatus("Còn trống");
+                roomRepository.save(room);
+            }
+        }
+        return newHotel;
     }
 
     @Override
@@ -95,6 +114,19 @@ public class HotelServiceImpl implements IHotelService {
     public HotelResponse findById(Long id) {
         Hotel hotel = hotelRepository.findById(id).get();
         return modelMapper.map(hotel, HotelResponse.class);
+    }
+
+    @Override
+    public HotelResponse updateIsEnabled(Long id) {
+        Optional<Hotel> hotelOptional =  hotelRepository.findById(id);
+        if(hotelOptional.isEmpty()){
+            return null;
+        }
+        Hotel hotel = hotelOptional.get();
+        hotel.setIsEnabled(hotel.getIsEnabled() == 1 ? 0 : 1);
+        Hotel newHotel = hotelRepository.save(hotel);
+        return modelMapper.map(newHotel ,HotelResponse.class);
+
     }
 
 

@@ -15,6 +15,8 @@ public class HotelResponse {
     private Integer totalNumberRoom;
     private String images;
 
+    private Integer isEnabled;
+
     private List<RoomResponse> rooms;
 
 }

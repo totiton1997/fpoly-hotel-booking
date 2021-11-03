@@ -8,7 +8,7 @@ import lombok.Setter;
 public class RoomResponse {
     private Long id;
 
-    private int numberRoom;
+    private String numberRoom;
 
     private String status;
 
@@ -17,5 +17,6 @@ public class RoomResponse {
     private String description;
 
     private String nameTypeRoom;
+
 
 }

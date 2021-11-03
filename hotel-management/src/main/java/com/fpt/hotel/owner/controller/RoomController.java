@@ -22,11 +22,11 @@ public class RoomController {
     IRoomService roomService;
 
     @GetMapping
-    public ResponseEntity<ResponseObject> findAllRoom() {
-        List<RoomResponse> roomDTOList = roomService.findAll();
+    public ResponseEntity<ResponseObject> findAllRoom(@RequestParam("id") Long id) {
+        List<RoomResponse> roomDTOList = roomService.findAll(id);
         if (roomDTOList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                    new ResponseObject(HttpStatus.NO_CONTENT.toString(), "Không có phòng nào!", roomDTOList)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(HttpStatus.NOT_FOUND.toString(), "Không có phòng nào!", roomDTOList)
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(

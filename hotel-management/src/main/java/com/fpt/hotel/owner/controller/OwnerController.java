@@ -51,9 +51,9 @@ public class OwnerController {
     }
 
     @PutMapping("user/{id}")
-    public ResponseEntity<ResponseObject> update(@PathVariable("id") Integer id, @RequestBody User user) {
+    public ResponseEntity<ResponseObject> update(@PathVariable("id") Integer id) {
 
-        User update = ownerService.update(id, user);
+        User update = ownerService.update(id);
 
         if (update == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

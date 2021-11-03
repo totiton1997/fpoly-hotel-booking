@@ -16,6 +16,7 @@ public class OwnerResponse {
     private String last_name;
     private String phone;
     private String email;
+    private String address;
 
     @Temporal(TemporalType.DATE)
     private Date date_of_birth;
@@ -23,4 +24,8 @@ public class OwnerResponse {
     private String image;
     private String username;
     private Integer id_creator;
+
+    private Long idHotel;
+
+    private String nameHotel;
 }
