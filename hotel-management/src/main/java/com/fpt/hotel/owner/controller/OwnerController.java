@@ -53,14 +53,34 @@ public class OwnerController {
     @PutMapping("user/{id}")
     public ResponseEntity<ResponseObject> update(@PathVariable("id") Integer id) {
 
-        User update = ownerService.update(id);
+        OwnerResponse update = ownerService.update(id);
+
+        if (update == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject("Not found", "Không có user này", null));
+        }
+        String lockUser = "Khóa tài khoản " + update.getUsername().toUpperCase() + " thành công!";
+
+        String openUser = "Mở khóa tài khoản " + update.getUsername().toUpperCase() + " thành công!";
+
+        String message = update.getEnabled() == 1 ? openUser : lockUser;
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", message, update));
+    }
+
+
+    @PutMapping("user/{idUser}/{idHotel}")
+    public ResponseEntity<ResponseObject> tranferHotel(@PathVariable("idUser") Integer idUser,
+                                                       @PathVariable("idHotel") Long idHotel) {
+
+        OwnerResponse update = ownerService.updateHotel(idUser, idHotel);
 
         if (update == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseObject("Not found", "Không có user này", null));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", "cập nhật user thành công", update));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", "Chuyển cơ sở thành công", update));
     }
 
 }

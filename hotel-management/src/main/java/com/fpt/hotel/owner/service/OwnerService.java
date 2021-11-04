@@ -12,5 +12,7 @@ public interface OwnerService {
 
     User save(String folder, String user, List<MultipartFile>  files);
 
-    User update(Integer id);
+    OwnerResponse update(Integer id);
+
+    OwnerResponse updateHotel(Integer idUser , Long idHotel);
 }

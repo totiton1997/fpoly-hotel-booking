@@ -112,8 +112,12 @@ public class HotelServiceImpl implements IHotelService {
 
     @Override
     public HotelResponse findById(Long id) {
-        Hotel hotel = hotelRepository.findById(id).get();
-        return modelMapper.map(hotel, HotelResponse.class);
+        Optional<Hotel> hotelOptional = hotelRepository.findById(id);
+        HotelResponse hotelResponse = null;
+        if(hotelOptional.isPresent()){
+            hotelResponse = modelMapper.map(hotelOptional.get(), HotelResponse.class);
+        }
+        return hotelResponse;
     }
 
     @Override

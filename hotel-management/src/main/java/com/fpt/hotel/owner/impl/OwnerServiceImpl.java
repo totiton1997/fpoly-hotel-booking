@@ -95,7 +95,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public User update(Integer id) {
+    public OwnerResponse update(Integer id) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty()) {
             return null;
@@ -103,7 +103,22 @@ public class OwnerServiceImpl implements OwnerService {
         User user = userOpt.get();
         user.setEnabled(user.getEnabled() == 1 ? 0 : 1);
 
-        return userRepository.save(user);
+        return modelMapper.map(userRepository.save(user),OwnerResponse.class);
+    }
+
+    @Override
+    public OwnerResponse updateHotel(Integer idUser, Long idHotel) {
+        Optional<User> userOptional = userRepository.findById(idUser);
+        Optional<Hotel> hotelOptional = hotelRepository.findById(idHotel);
+        OwnerResponse ownerResponse = null;
+        if(userOptional.isPresent() && hotelOptional.isPresent()){
+            User user = userOptional.get();
+            Hotel hotel = hotelOptional.get();
+            user.setHotel(hotel);
+            User newUser = userRepository.save(user);
+            ownerResponse = modelMapper.map(newUser , OwnerResponse.class );
+        }
+        return ownerResponse;
     }
 
 }
