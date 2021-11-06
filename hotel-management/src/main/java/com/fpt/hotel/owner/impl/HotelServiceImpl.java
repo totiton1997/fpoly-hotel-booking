@@ -3,6 +3,7 @@ package com.fpt.hotel.owner.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpt.hotel.model.Hotel;
 import com.fpt.hotel.model.Room;
+import com.fpt.hotel.owner.dto.request.HotelRequest;
 import com.fpt.hotel.owner.dto.response.HotelResponse;
 import com.fpt.hotel.owner.service.IHotelService;
 import com.fpt.hotel.repository.HotelRepository;
@@ -80,35 +81,35 @@ public class HotelServiceImpl implements IHotelService {
         return newHotel;
     }
 
-    @Override
-    public Hotel updateHotel(Long id, String folder, String hotel, List<MultipartFile> files) {
-        Hotel hotelOld = hotelRepository.findById(id).get();
-        Hotel hotelJson = new Hotel();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            hotelJson = objectMapper.readValue(hotel, Hotel.class);
-
-            // lấy id cũ để cập nhật
-            hotelJson.setId(hotelOld.getId());
-
-            String image = "";
-            if (files == null) {
-                image = hotelOld.getImages();
-            } else {
-                List<String> fileLists = fileManagerService.save(folder, files);
-                String fileName =  String.join("," , fileLists);
-                fileManagerService.delete(folder, image);
-                image = fileName;
-            }
-
-            hotelJson.setImages(image);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        return hotelRepository.save(hotelJson);
-    }
+//    @Override
+//    public Hotel updateHotel(Long id, String folder, String hotel, List<MultipartFile> files) {
+//        Hotel hotelOld = hotelRepository.findById(id).get();
+//        Hotel hotelJson = new Hotel();
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            hotelJson = objectMapper.readValue(hotel, Hotel.class);
+//
+//            // lấy id cũ để cập nhật
+//            hotelJson.setId(hotelOld.getId());
+//
+//            String image = "";
+//            if (files == null) {
+//                image = hotelOld.getImages();
+//            } else {
+//                List<String> fileLists = fileManagerService.save(folder, files);
+//                String fileName =  String.join("," , fileLists);
+//                fileManagerService.delete(folder, image);
+//                image = fileName;
+//            }
+//
+//            hotelJson.setImages(image);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e.getMessage());
+//        }
+//
+//        return hotelRepository.save(hotelJson);
+//    }
 
     @Override
     public HotelResponse findById(Long id) {
@@ -131,6 +132,19 @@ public class HotelServiceImpl implements IHotelService {
         Hotel newHotel = hotelRepository.save(hotel);
         return modelMapper.map(newHotel ,HotelResponse.class);
 
+    }
+
+    @Override
+    public HotelResponse updateHotel(HotelRequest hotelRequest) {
+        HotelResponse hotelResponse = null;
+        Optional<Hotel> hotelOptional = hotelRepository.findById(hotelRequest.getId());
+        if(hotelOptional.isPresent()){
+            Hotel hotel = hotelOptional.get();
+            hotel = modelMapper.map(hotelRequest , Hotel.class);
+            Hotel newHotel = hotelRepository.save(hotel);
+            hotelResponse = modelMapper.map(newHotel , HotelResponse.class);
+        }
+        return hotelResponse;
     }
 
 

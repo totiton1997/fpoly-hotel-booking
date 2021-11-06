@@ -17,13 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/owner")
-@PreAuthorize("hasRole('ADMIN')")
 @CrossOrigin("*")
 public class OwnerController {
 
     @Autowired
     OwnerService ownerService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("user")
     public ResponseEntity<ResponseObject> getAll(@RequestParam("role_name") String roleName) {
 
@@ -35,10 +35,11 @@ public class OwnerController {
                 .body(new ResponseObject("ok", "Trả về dữ liệu user thành công", findAll));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "user/{folder}", consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseObject> create(@PathVariable("folder") String folder, @RequestPart("user") String user,
-                                    @RequestPart(name = "file" , required = false) List<MultipartFile>  files) {
+                                                 @RequestPart(name = "file", required = false) List<MultipartFile> files) {
 
         User userRes = ownerService.save(folder, user, files);
 
@@ -50,10 +51,11 @@ public class OwnerController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", "Thêm user thành công", userRes));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("user/{id}")
-    public ResponseEntity<ResponseObject> update(@PathVariable("id") Integer id) {
+    public ResponseEntity<ResponseObject> updateIsEnabled(@PathVariable("id") Integer id) {
 
-        OwnerResponse update = ownerService.update(id);
+        OwnerResponse update = ownerService.updateIsEnabled(id);
 
         if (update == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -69,6 +71,7 @@ public class OwnerController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("user/{idUser}/{idHotel}")
     public ResponseEntity<ResponseObject> tranferHotel(@PathVariable("idUser") Integer idUser,
                                                        @PathVariable("idHotel") Long idHotel) {
@@ -82,5 +85,35 @@ public class OwnerController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", "Chuyển cơ sở thành công", update));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    @GetMapping("/user/{id}")
+    public ResponseEntity<ResponseObject> getUserById(@PathVariable("id") Integer id) {
+
+        OwnerResponse ownerResponse = ownerService.findById(id);
+        if (ownerResponse == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "Không có user nào", null));
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseObject("ok", "Trả về dữ liệu user thành công", ownerResponse));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    @PutMapping(value = "user", consumes = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ResponseObject>
+    updateUser(@RequestPart("user") String user,
+               @RequestPart(value = "file", required = false) List<MultipartFile> files) {
+
+        OwnerResponse update = ownerService.updateUser(user, files);
+
+        if (update == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject("Not found", "Không tìm thấy user này", null));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Ok", "Cập nhật user thành công", update));
+    }
+
 
 }

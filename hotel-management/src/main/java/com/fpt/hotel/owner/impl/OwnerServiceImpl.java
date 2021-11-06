@@ -95,7 +95,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public OwnerResponse update(Integer id) {
+    public OwnerResponse updateIsEnabled(Integer id) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty()) {
             return null;
@@ -103,7 +103,7 @@ public class OwnerServiceImpl implements OwnerService {
         User user = userOpt.get();
         user.setEnabled(user.getEnabled() == 1 ? 0 : 1);
 
-        return modelMapper.map(userRepository.save(user),OwnerResponse.class);
+        return modelMapper.map(userRepository.save(user), OwnerResponse.class);
     }
 
     @Override
@@ -111,14 +111,48 @@ public class OwnerServiceImpl implements OwnerService {
         Optional<User> userOptional = userRepository.findById(idUser);
         Optional<Hotel> hotelOptional = hotelRepository.findById(idHotel);
         OwnerResponse ownerResponse = null;
-        if(userOptional.isPresent() && hotelOptional.isPresent()){
+        if (userOptional.isPresent() && hotelOptional.isPresent()) {
             User user = userOptional.get();
             Hotel hotel = hotelOptional.get();
             user.setHotel(hotel);
             User newUser = userRepository.save(user);
-            ownerResponse = modelMapper.map(newUser , OwnerResponse.class );
+            ownerResponse = modelMapper.map(newUser, OwnerResponse.class);
         }
         return ownerResponse;
+    }
+
+    @Override
+    public OwnerResponse findById(Integer id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            return null;
+        }
+        return modelMapper.map(userOptional.get(), OwnerResponse.class);
+    }
+
+    @Override
+    public OwnerResponse updateUser(String userRequest, List<MultipartFile> files) {
+        User userJson = null;
+        User user = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            userJson = objectMapper.readValue(userRequest, User.class);
+            user = userRepository.findById(userJson.getId()).get();
+
+            String fileName = "";
+            if (files != null) {
+                String folder = "image_user";
+                List<String> fileLists = fileService.save(folder, files);
+                fileName = fileLists.get(0);
+                fileService.delete(folder, user.getImage());
+            }
+
+            user.setImage(fileName);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return modelMapper.map(userRepository.save(user), OwnerResponse.class);
     }
 
 }

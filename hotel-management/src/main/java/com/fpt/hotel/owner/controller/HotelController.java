@@ -2,6 +2,7 @@ package com.fpt.hotel.owner.controller;
 
 
 import com.fpt.hotel.model.Hotel;
+import com.fpt.hotel.owner.dto.request.HotelRequest;
 import com.fpt.hotel.owner.dto.response.HotelResponse;
 import com.fpt.hotel.owner.impl.HotelServiceImpl;
 import com.fpt.hotel.owner.service.IHotelService;
@@ -62,23 +63,23 @@ public class HotelController {
         );
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "{folder}/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ResponseObject> updateHotel(@PathVariable("id") Long id, @PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
-                                                      @RequestPart(name = "file", required = false) List<MultipartFile> files) {
-
-        Hotel newHotel = hotelService.updateHotel(id, folder, hotel, files);
-        if (newHotel != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(HttpStatus.OK.toString(), "Cập nhật cơ sở thành công!", newHotel)
-            );
-        }
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Cập nhật cơ sở thất bại!", newHotel)
-        );
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PutMapping(value = "{folder}/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE,
+//            MediaType.MULTIPART_FORM_DATA_VALUE})
+//    public ResponseEntity<ResponseObject> updateHotel(@PathVariable("id") Long id, @PathVariable("folder") String folder, @RequestPart("hotel") String hotel,
+//                                                      @RequestPart(name = "file", required = false) List<MultipartFile> files) {
+//
+//        Hotel newHotel = hotelService.updateHotel(id, folder, hotel, files);
+//        if (newHotel != null) {
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(HttpStatus.OK.toString(), "Cập nhật cơ sở thành công!", newHotel)
+//            );
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+//                new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Cập nhật cơ sở thất bại!", newHotel)
+//        );
+//    }
 
     @PutMapping("{id}")
     public ResponseEntity<ResponseObject> updateIsEnabled(@PathVariable("id") Long id) {
@@ -95,6 +96,20 @@ public class HotelController {
         );
     }
 
+    @PutMapping("")
+    public ResponseEntity<ResponseObject> updateHotel(@RequestBody HotelRequest hotelRequest) {
+
+        HotelResponse hotelResponse = hotelService.updateHotel(hotelRequest);
+        if (hotelResponse != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(HttpStatus.OK.toString(), "Cập nhật cơ sở thành công!", hotelResponse)
+            );
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject(HttpStatus.NOT_FOUND.toString(), "Cập nhật cơ sở thất bại!", hotelResponse)
+        );
+    }
 
 
 }
