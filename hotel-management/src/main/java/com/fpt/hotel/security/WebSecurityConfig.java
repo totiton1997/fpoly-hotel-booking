@@ -54,7 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors().and().csrf().
+                ignoringAntMatchers("/h2-console/**")
+                .and().headers().frameOptions().sameOrigin().
+                disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**", "/api/hotels", "/api/rest/files/**",
@@ -64,9 +67,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**",
+                "/h2-console/**",
                 "/api/owner/hotels/**",
                 "/api/owner/typerooms/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/api/test/**" , "/h2-console/**").permitAll()
+
+
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
